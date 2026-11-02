@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- iOSでホーム画面から開いたときにフルスクリーン表示にする設定 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Calendar Clock</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background-color: #1a2525;
+            /* 少し落ち着いたダークスレートグレー */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            /* スクロールを防止 */
+            user-select: none;
+            /* 長押しでのテキスト選択を防止 */
+        }
+
+        #clock-container {
+            text-align: center;
+        }
+
+        #date {
+            color: lightgreen;
+            font-weight: bold;
+            font-size: 12vw;
+            /* 画面幅に合わせて調整 */
+            margin-bottom: 2vh;
+        }
+
+        #time {
+            color: lightgreen;
+            font-weight: bold;
+            font-size: 18vw;
+            /* 画面幅に合わせて調整 */
+            line-height: 1;
+        }
+
+        /* コロンの点滅アニメーション */
+        /* #sep {
+            display: inline-block;
+            animation: blink 1s infinite;
+        } */
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="clock-container">
+        <div id="date">--/--(--)</div>
+        <div id="time"><span id="hour">--</span><span id="sep">:</span><span id="min">--</span></div>
+    </div>
+
+    <script>
+        (function () {
+            const days = ["日", "月", "火", "水", "木", "金", "土"];
+            const elmDate = document.getElementById("date");
+            const elmHour = document.getElementById("hour");
+            const elmMin = document.getElementById("min");
+
+            function updateClock() {
+                const now = new Date();
+
+                const min = String(now.getMinutes()).padStart(2, "0");
+                if (elmMin.innerText !== min) {
+                    elmMin.innerText = min;
+                }
+
+                const hour = String(now.getHours()).padStart(2, "0");
+                if (elmHour.innerText !== hour) {
+                    elmHour.innerText = hour;
+                }
+
+                const date = `${now.getMonth() + 1}/${now.getDate()}(${days[now.getDay()]})`;
+                if (elmDate.innerText !== date) {
+                    elmDate.innerText = date;
+                }
+            }
+
+            // 初回実行（ロード時の空白を防ぐ）
+            updateClock();
+
+            // 1秒ごとに実行
+            setInterval(updateClock, 1000);
+        })();
+    </script>
+</body>
+
+</html>
